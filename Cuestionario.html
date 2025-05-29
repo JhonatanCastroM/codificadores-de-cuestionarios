@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cuestionario Interactivo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f8f9fa;
+    }
+    .card {
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.01);
+    }
+    .progress {
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="container py-5">
+  <div class="text-center mb-4">
+    <h1 class="display-5 fw-bold text-primary"><i class="bi bi-ui-checks-grid me-2"></i>Cuestionario</h1>
+    <p class="lead text-secondary">Selecciona la mejor opción para cada pregunta.</p>
+  </div>
+
+  <!-- Progreso -->
+  <div class="progress mb-4 shadow-sm" id="barraProgreso">
+    <div class="progress-bar bg-primary" style="width: 20%">20%</div>
+  </div>
+
+  <!-- Pregunta 1 -->
+  <div id="pregunta-1" class="card shadow-lg border-0 mb-4">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Pregunta 1 de 2</h5>
+    </div>
+    <div class="card-body">
+      <p class="fs-5">¿Cuál es la función principal de un <strong>codificador</strong> en un sistema digital?</p>
+      <div class="list-group">
+        <label class="list-group-item"><input type="radio" name="p1" class="form-check-input me-2"> Convertir un código binario de 'n' bits en una de '2^n' líneas de salida.</label>
+        <label class="list-group-item"><input type="radio" name="p1" class="form-check-input me-2"> Seleccionar una línea de datos y dirigirla a una salida.</label>
+        <label class="list-group-item"><input type="radio" name="p1" class="form-check-input me-2"> Convertir varias líneas activas en un código binario de 'n' bits.</label>
+        <label class="list-group-item"><input type="radio" name="p1" class="form-check-input me-2"> Almacenar datos binarios temporalmente.</label>
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-end">
+      <button class="btn btn-success" id="btn-siguiente-1">Siguiente <i class="bi bi-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- Pregunta 2 -->
+  <div id="pregunta-2" class="card shadow-lg border-0 mb-4 d-none">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Pregunta 2 de 2</h5>
+    </div>
+    <div class="card-body">
+      <p class="fs-5">¿Qué hace un <strong>decodificador</strong> en un sistema digital?</p>
+      <div class="list-group">
+        <label class="list-group-item"><input type="radio" name="p2" class="form-check-input me-2"> Genera una salida binaria desde múltiples entradas activas.</label>
+        <label class="list-group-item"><input type="radio" name="p2" class="form-check-input me-2"> Convierte un código binario en una única línea activa.</label>
+        <label class="list-group-item"><input type="radio" name="p2" class="form-check-input me-2"> Almacena datos binarios.</label>
+        <label class="list-group-item"><input type="radio" name="p2" class="form-check-input me-2"> Comprime señales de entrada.</label>
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+      <button class="btn btn-secondary" id="btn-anterior-2"><i class="bi bi-arrow-left"></i> Anterior</button>
+      <button class="btn btn-primary" id="btn-finalizar">Finalizar</button>
+    </div>
+  </div>
+
+  <!-- Resultado -->
+  <div id="resultado" class="alert alert-info d-none text-center mt-4">
+    <strong>¡Cuestionario finalizado!</strong> Gracias por tu participación.
+  </div>
+</div>
+
+<script>
+  // Navegación entre preguntas
+  document.getElementById("btn-siguiente-1").addEventListener("click", function () {
+    document.getElementById("pregunta-1").classList.add("d-none");
+    document.getElementById("pregunta-2").classList.remove("d-none");
+    document.querySelector(".progress-bar").style.width = "100%";
+    document.querySelector(".progress-bar").textContent = "100%";
+  });
+
+  document.getElementById("btn-anterior-2").addEventListener("click", function () {
+    document.getElementById("pregunta-2").classList.add("d-none");
+    document.getElementById("pregunta-1").classList.remove("d-none");
+    document.querySelector(".progress-bar").style.width = "20%";
+    document.querySelector(".progress-bar").textContent = "20%";
+  });
+
+  document.getElementById("btn-finalizar").addEventListener("click", function () {
+    document.getElementById("pregunta-2").classList.add("d-none");
+    document.getElementById("resultado").classList.remove("d-none");
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
