@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cuestionario: Codificadores y Decodificadores</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(120deg, #0f2027 0%, #2c5364 100%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #222;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .quiz-container {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 6px 32px rgba(0,0,0,0.18);
+      padding: 2.5rem 2rem;
+      width: 370px;
+      max-width: 95vw;
+      text-align: center;
+    }
+    .quiz-container h1 {
+      margin-bottom: 1.2rem;
+      color: #2c5364;
+    }
+    .question {
+      font-size: 1.18rem;
+      margin: 1.5rem 0 1rem 0;
+      font-weight: 600;
+    }
+    .answers {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    .answer-btn {
+      padding: 0.7rem 1rem;
+      background: #f1f5fc;
+      border: none;
+      border-radius: 7px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+    .answer-btn:hover, .answer-btn.selected {
+      background: #2c5364;
+      color: #fff;
+    }
+    .next-btn {
+      background: #0f2027;
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 0.7rem 1.2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1.2rem;
+      transition: background 0.18s;
+    }
+    .next-btn:disabled {
+      background: #b0c9f6;
+      cursor: not-allowed;
+    }
+    .score {
+      font-size: 1.4rem;
+      color: #0f2027;
+      margin-bottom: 1rem;
+    }
+    .restart-btn {
+      background: #fff;
+      color: #0f2027;
+      border: 2px solid #0f2027;
+      border-radius: 7px;
+      padding: 0.6rem 1.3rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1.2rem;
+      transition: background 0.18s, color 0.18s;
+    }
+    .restart-btn:hover {
+      background: #0f2027;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container" id="quiz">
+    <h1>Codificadores y Decodificadores</h1>
+    <div id="question-container"></div>
+    <button class="next-btn" id="nextBtn" disabled>Siguiente</button>
+  </div>
+  <script>
+    const quizData = [
+      {
+        question: "¿Qué función realiza un codificador en sistemas digitales?",
+        options: [
+          "Convierte datos decimales a binarios",
+          "Convierte señales binarias en señales analógicas",
+          "Convierte una de varias entradas activas en un código binario de salida",
+          "Multiplica dos señales de entrada"
+        ],
+        answer: 2
+      },
+      {
+        question: "¿Cuál es la principal diferencia entre un codificador y un decodificador?",
+        options: [
+          "El codificador suma bits, el decodificador los resta",
+          "El codificador convierte información a un código, el decodificador hace la operación inversa",
+          "El decodificador sólo se usa en sistemas analógicos",
+          "Ninguna, ambos realizan la misma función"
+        ],
+        answer: 1
+      },
+      {
+        question: "¿Cuántas salidas tiene un decodificador de 3 a 8?",
+        options: [
+          "3",
+          "6",
+          "8",
+          "5"
+        ],
+        answer: 2
+      },
+      {
+        question: "¿Cuál de los siguientes es un ejemplo de aplicación de un codificador?",
+        options: [
+          "Selector de canal en un televisor",
+          "Control de motores paso a paso",
+          "Conversor analógico-digital",
+          "Multiplexor de señales"
+        ],
+        answer: 0
+      },
+      {
+        question: "¿Qué ocurre si en un codificador estándar hay más de una entrada activa al mismo tiempo?",
+        options: [
+          "Genera una salida inválida o ambigua",
+          "Selecciona la entrada de mayor peso",
+          "No genera ninguna salida",
+          "Genera todas las salidas activas"
+        ],
+        answer: 0
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let selectedOption = null;
+
+    const quiz = document.getElementById('quiz');
+    const questionContainer = document.getElementById('question-container');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function showQuestion() {
+      const q = quizData[currentQuestion];
+      questionContainer.innerHTML = `
+        <div class="question">${q.question}</div>
+        <div class="answers" id="answers"></div>
+      `;
+      const answersDiv = document.getElementById('answers');
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "answer-btn";
+        btn.innerText = opt;
+        btn.onclick = () => selectAnswer(idx, btn);
+        answersDiv.appendChild(btn);
+      });
+      nextBtn.disabled = true;
+      selectedOption = null;
+    }
+
+    function selectAnswer(idx, btn) {
+      document.querySelectorAll('.answer-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedOption = idx;
+      nextBtn.disabled = false;
+    }
+
+    nextBtn.onclick = () => {
+      if (selectedOption === quizData[currentQuestion].answer) score++;
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        showQuestion();
+      } else {
+        showScore();
+      }
+    };
+
+    function showScore() {
+      quiz.innerHTML = `
+        <h1>¡Resultados!</h1>
+        <div class="score">Obtuviste ${score} de ${quizData.length} correctas.</div>
+        <button class="restart-btn" onclick="location.reload()">Reintentar</button>
+      `;
+    }
+
+    // Inicializar
+    showQuestion();
+  </script>
+</body>
+</html>
